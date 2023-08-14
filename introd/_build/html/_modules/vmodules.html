@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vmodules &mdash; Vquants 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Vquants
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">VQuant量化方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">代码说明</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Vquants</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vmodules</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vmodules</h1><div class="highlight"><pre>
+<span></span><span class="c1"># *</span>
+<span class="c1"># @file Different utility functions</span>
+<span class="c1"># Copyright (c) Cong Guo, Yuxian Qiu, Jingwen Leng, Xiaotian Gao,</span>
+<span class="c1"># Chen Zhang, Yunxin Liu, Fan Yang, Yuhao Zhu, Minyi Guo</span>
+<span class="c1"># Copyright (c) Huanning Dong</span>
+<span class="c1"># All rights reserved.</span>
+<span class="c1"># This file is part of SQuant repository.</span>
+<span class="c1">#</span>
+<span class="c1"># SQuant is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># SQuant is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with SQuant repository.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># *</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">quant_affine</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">vquant_kernel.fixnu</span> <span class="kn">import</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">vround</span><span class="p">,</span> <span class="n">lbfgs_optimizer</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> 
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Quantizer"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer">[docs]</a><span class="k">class</span> <span class="nc">Quantizer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;vquant&quot;</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">129.5</span><span class="p">,</span> <span class="mf">128.5</span><span class="p">),</span> <span class="n">is_signed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_enable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_input</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Quantizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;bit&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">bit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_signed</span> <span class="o">=</span> <span class="n">is_signed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_enable</span> <span class="o">=</span> <span class="n">is_enable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_enable_input</span> <span class="o">=</span> <span class="n">is_enable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_input</span> <span class="o">=</span> <span class="n">is_input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">uniw</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmaw</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bound</span> <span class="o">=</span> <span class="n">bound</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">percent</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_sigma</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">sigma</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_sigma</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cr</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">constraint_radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pe</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">packed_element</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_zero</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight_tensor</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;x_max&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;x_min&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_inited_quant_para</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_quant_weight</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_perchannel</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">is_input</span><span class="p">:</span>
+            <span class="c1"># Input shouldn&#39;t be per-channel quantizaton！</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_perchannel</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensor_sum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensor_sum_cov</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Quantizer.disable_input_quantization"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.disable_input_quantization">[docs]</a>    <span class="k">def</span> <span class="nf">disable_input_quantization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_enable_input</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Quantizer.enable_quantization"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.enable_quantization">[docs]</a>    <span class="k">def</span> <span class="nf">enable_quantization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_enable</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Quantizer.disable_quantization"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.disable_quantization">[docs]</a>    <span class="k">def</span> <span class="nf">disable_quantization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_enable</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">_sigma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_signed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tensor</span><span class="p">[</span><span class="n">tensor</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Quantizer.updata_packed_element"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.updata_packed_element">[docs]</a>    <span class="k">def</span> <span class="nf">updata_packed_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pe</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pe</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pe</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Quantizer.updata_signed"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.updata_signed">[docs]</a>    <span class="k">def</span> <span class="nf">updata_signed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_signed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_input</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Warning!: Signed input!&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Quantizer.convert_tensor"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.convert_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">convert_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">)))</span>
+        <span class="n">values</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="Quantizer.adaptive_round"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.adaptive_round">[docs]</a>    <span class="k">def</span> <span class="nf">adaptive_round</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># [t_min,t_max]</span>
+        <span class="c1"># param</span>
+        <span class="n">n_L</span> <span class="o">=</span> <span class="o">-</span> <span class="n">n_min</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">n_R</span> <span class="o">=</span> <span class="n">n_max</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># alpha = n_min.item() - self.bound[0]</span>
+        <span class="c1"># beta = n_max.item() + self.bound[1]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+        <span class="n">learning_rate</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">rate</span>  <span class="c1"># learning_rate*(1-rate[0])**rate[1] , if vcost_before - vcost &lt; rate[2]</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">epsilon</span>
+        <span class="n">grandtype</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">grandtype</span>
+        <span class="n">costtype</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">costtype</span>  <span class="c1"># cost &#39;W&#39;,&#39;X&#39;</span>
+        <span class="n">nudistr</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">nudistr</span>  <span class="c1"># exp &#39;neardist&#39;,&#39;random&#39;,&#39;uniform&#39;</span>
+
+        <span class="n">uniw</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">sigmaw</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">testnametime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m-</span><span class="si">%d</span><span class="s2">-%H-%M-%S&quot;</span><span class="p">)</span>
+
+        <span class="n">testname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">testnametime</span><span class="si">}</span><span class="s2">_wquant_</span><span class="si">{</span><span class="n">costtype</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">grandtype</span><span class="si">}</span><span class="s2">_nu=</span><span class="si">{</span><span class="n">nudistr</span><span class="si">}</span><span class="s2">_Omega=</span><span class="si">{</span><span class="p">[</span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">]</span><span class="si">}</span><span class="s2">P=</span><span class="si">{</span><span class="n">uniw</span><span class="p">,</span><span class="w"> </span><span class="n">sigmaw</span><span class="si">}</span><span class="s2">n=</span><span class="si">{</span><span class="p">[</span><span class="n">n_L</span><span class="p">,</span><span class="w"> </span><span class="n">n_R</span><span class="p">]</span><span class="si">}</span><span class="s2">_lr=</span><span class="si">{</span><span class="n">learning_rate</span><span class="si">}{</span><span class="n">rate</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Get the rounding integer and fraction.</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">n_L</span><span class="p">,</span> <span class="n">n_R</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">h_optimal</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">C_optimal</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span><span class="n">n_R</span><span class="p">,</span> <span class="n">n_L</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">nudistr</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span>
+                                            <span class="n">grandtype</span><span class="p">,</span> <span class="n">costtype</span><span class="p">,</span> <span class="n">testname</span><span class="p">,</span> <span class="n">uniw</span><span class="p">,</span> <span class="n">sigmaw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="c1"># h_optimal = lbfgs_optimizer(x, uniw, sigmaw, n_R, n_L, alpha, beta, S, max_iterations=100, tolerance=1e-6)</span>
+        <span class="n">rounding_number</span> <span class="o">=</span> <span class="n">vround</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">C_optimal</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+        <span class="n">rounding_number</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">rounding_number</span><span class="p">,</span> <span class="n">n_min</span><span class="p">,</span> <span class="n">n_max</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">rounding_number</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">rounding_number</span></div>
+
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_init_quant_para</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_inited_quant_para</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;QUANT </span><span class="si">%d</span><span class="s2"> bit: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bit</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updata_packed_element</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updata_signed</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="n">x_max</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="n">x_min</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_sigma</span><span class="p">:</span>
+                <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sigma</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span> <span class="n">sigma</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_signed</span><span class="p">:</span>
+                    <span class="c1"># We also consider the signed activation. Other framworks will skip this tensor.</span>
+                    <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">/</span> <span class="mf">1.25</span>
+
+                <span class="c1"># For a higher bit-width, using a wider range still will not cause accuracy loss.</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+                    <span class="c1"># For small bit, need clip.</span>
+                    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">_quant</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_perchannel</span><span class="p">:</span>
+                    <span class="n">x_max</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">x_max</span> <span class="o">=</span> <span class="n">x_max</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">x_min</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">x_min</span> <span class="o">=</span> <span class="n">x_min</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">x_max</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+                    <span class="n">x_min</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+                <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span> <span class="o">=</span> <span class="n">asymmetric_linear_quantization_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bit</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+                <span class="n">quant_tensor</span> <span class="o">=</span> <span class="n">linear_quantize</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bit</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;vquant&quot;</span><span class="p">:</span>
+                    <span class="n">quantshape</span> <span class="o">=</span> <span class="n">quant_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+                    <span class="c1"># round_tensor = torch.zeros(quantshape)</span>
+                    <span class="c1"># for i in range(quantshape[0]):</span>
+                    <span class="c1">#     channel_tensor = self.adaptive_round(quant_tensor[i].view(-1), -n, n - 1)</span>
+                    <span class="c1">#     asc = channel_tensor.reshape(quantshape[1:])</span>
+                    <span class="c1">#     round_tensor[i] = channel_tensor.reshape(quantshape[1:])</span>
+                    <span class="c1"># quant_tensor = round_tensor</span>
+                    <span class="c1"># quant_tensor.cpu()</span>
+                    <span class="n">round_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptive_round</span><span class="p">(</span><span class="n">quant_tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">n_min</span> <span class="o">=-</span><span class="n">n</span><span class="p">,</span> <span class="n">n_max</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">quant_tensor</span> <span class="o">=</span> <span class="n">round_tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">quantshape</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">quant_tensor</span> <span class="o">=</span> <span class="n">quant_tensor</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unsupported mode: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+
+                <span class="n">quant_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">quant_tensor</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># [-128,127]</span>
+                <span class="n">quant_tensor</span> <span class="o">=</span> <span class="n">linear_dequantize</span><span class="p">(</span><span class="n">quant_tensor</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">quant_tensor</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_input</span><span class="p">:</span>
+                <span class="c1"># Weight quantization</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight_tensor</span> <span class="o">=</span> <span class="n">_quant</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1">#调用权重的量化_quant</span>
+                <span class="n">elapsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Quantzation time: </span><span class="si">%f</span><span class="s2"> ms&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">elapsed</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Activation quantization</span>
+                <span class="c1"># min</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_signed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">x_min</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">x_min</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+                <span class="c1"># max</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_max</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">alpha</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_inited_quant_para</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">tensor</span><span class="p">,</span> <span class="n">has_quant_weight</span> <span class="o">=</span> <span class="n">AsymmetricQuantFunction</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_quant_weight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_quant_weight</span> <span class="o">=</span> <span class="n">has_quant_weight</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+
+<div class="viewcode-block" id="Quantizer.tensor_forward"><a class="viewcode-back" href="../vmodules.html#vmodules.Quantizer.tensor_forward">[docs]</a>    <span class="k">def</span> <span class="nf">tensor_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">image_size</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">=</span> <span class="n">image_size</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;base&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tensor</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_enable</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tensor</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_input</span><span class="p">:</span> <span class="c1">#判断是否为激活</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_enable_input</span><span class="p">:</span> <span class="c1">#如果不是可用激活这里就返回</span>
+                <span class="k">return</span> <span class="n">tensor</span> 
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_quant_para</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>  <span class="c1">#生成量化后的权重</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_input</span><span class="p">:</span>  <span class="c1">#是激活则调用激活的量化_forward量化</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1">#是权重则调用权重的量化</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight_tensor</span></div></div>
+
+
+<div class="viewcode-block" id="TensorQuantizer"><a class="viewcode-back" href="../vmodules.html#vmodules.TensorQuantizer">[docs]</a><span class="k">class</span> <span class="nc">TensorQuantizer</span><span class="p">(</span><span class="n">Quantizer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TensorQuantizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TensorQuantizer.forward"><a class="viewcode-back" href="../vmodules.html#vmodules.TensorQuantizer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_forward</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">image_size</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ActivationQuantizer"><a class="viewcode-back" href="../vmodules.html#vmodules.ActivationQuantizer">[docs]</a><span class="k">class</span> <span class="nc">ActivationQuantizer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wbit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ActivationQuantizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Quantizer is not initilized!&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quant_output</span> <span class="o">=</span> <span class="n">TensorQuantizer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="n">abit</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">bound</span><span class="p">,</span> <span class="n">is_signed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+                                            <span class="n">is_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ActivationQuantizer.forward"><a class="viewcode-back" href="../vmodules.html#vmodules.ActivationQuantizer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quant_output</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="LinearQuantizer"><a class="viewcode-back" href="../vmodules.html#vmodules.LinearQuantizer">[docs]</a><span class="k">class</span> <span class="nc">LinearQuantizer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to quantize given linear layer weights</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wbit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        weight: bit-setting for weight</span>
+<span class="sd">        full_precision_flag: full precision or not</span>
+<span class="sd">        running_stat: determines whether the activation range is updated or froze</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LinearQuantizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Quantizer is not initilized!&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quant_input</span> <span class="o">=</span> <span class="n">TensorQuantizer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="n">abit</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">bound</span><span class="p">,</span> <span class="n">is_signed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+                                           <span class="n">is_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight</span> <span class="o">=</span> <span class="n">TensorQuantizer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="n">wbit</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">bound</span><span class="p">,</span> <span class="n">is_signed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LinearQuantizer.set_param"><a class="viewcode-back" href="../vmodules.html#vmodules.LinearQuantizer.set_param">[docs]</a>    <span class="k">def</span> <span class="nf">set_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linear</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">in_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_features</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">out_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">linear</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">linear</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="LinearQuantizer.forward"><a class="viewcode-back" href="../vmodules.html#vmodules.LinearQuantizer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quant_input</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="c1"># logger.info(input.unique().numel(), self.quant_input.name)</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Conv2dQuantizer"><a class="viewcode-back" href="../vmodules.html#vmodules.Conv2dQuantizer">[docs]</a><span class="k">class</span> <span class="nc">Conv2dQuantizer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to quantize given convolutional layer weights</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wbit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Conv2dQuantizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Quantizer is not initilized!&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quant_input</span> <span class="o">=</span> <span class="n">TensorQuantizer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="n">abit</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">bound</span><span class="p">,</span> <span class="n">is_signed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+                                           <span class="n">is_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight</span> <span class="o">=</span> <span class="n">TensorQuantizer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="n">wbit</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">bound</span><span class="p">,</span> <span class="n">is_signed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Conv2dQuantizer.set_param"><a class="viewcode-back" href="../vmodules.html#vmodules.Conv2dQuantizer.set_param">[docs]</a>    <span class="k">def</span> <span class="nf">set_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conv</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">in_channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">out_channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">kernel_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">stride</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">padding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dilation</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">dilation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">conv</span><span class="o">.</span><span class="n">groups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="c1"># try:</span>
+        <span class="c1">#     self.bias = nn.Parameter(conv.bias.data.clone())</span>
+        <span class="c1"># except AttributeError:</span>
+        <span class="c1">#     self.bias = None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">_conv_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dilation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Conv2dQuantizer.forward"><a class="viewcode-back" href="../vmodules.html#vmodules.Conv2dQuantizer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quant_input</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="c1">#得到input</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quant_weight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="c1"># logger.info(input.unique().numel(), self.quant_input.name, &quot;input&quot;)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conv_forward</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span></div></div>
+    
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">Quantizer</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Huanning Dong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
