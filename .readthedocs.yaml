@@ -21,6 +21,9 @@ sphinx:
   # builder: "dirhtml"
   # Fail on all warnings to avoid broken references
   # fail_on_warning: true
+  build:
+    image: latest  # 使用的构建镜像
+    format: html   # 生成的文档格式
 
 # Optionally build your docs in additional formats such as PDF and ePub
 # formats:
