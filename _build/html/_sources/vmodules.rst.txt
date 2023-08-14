@@ -1,0 +1,8 @@
+vmodules module
+===============
+
+.. automodule:: vmodules
+   :members:
+   :undoc-members:
+   :show-inheritance:
+

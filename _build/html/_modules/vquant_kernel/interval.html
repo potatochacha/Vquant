@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vquant_kernel.interval &mdash; Vquants 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Vquants
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">VQuant量化方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">代码说明</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Vquants</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vquant_kernel.interval</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vquant_kernel.interval</h1><div class="highlight"><pre>
+<span></span><span class="c1"># *</span>
+<span class="c1"># @file Different utility functions</span>
+<span class="c1"># Copyright (c) Huanning Dong</span>
+<span class="c1"># All rights reserved.</span>
+<span class="c1"># This file is part of VQuant repository.</span>
+<span class="c1">#</span>
+<span class="c1"># VQuant is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># VQuant is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with VQuant repository.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># *</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">need</span> <span class="o">=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="calculate_X"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.calculate_X">[docs]</a><span class="k">def</span> <span class="nf">calculate_X</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">):</span> <span class="c1">#这里有计算冗余</span>
+    <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_X_j"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.calculate_X_j">[docs]</a><span class="k">def</span> <span class="nf">calculate_X_j</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">need</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_X</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)):</span>
+            <span class="n">X_i_j</span> <span class="o">=</span> <span class="n">calculate_X</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">X_i_j</span> <span class="o">&lt;=</span> <span class="n">min_X</span><span class="p">:</span>
+                <span class="n">min_X</span> <span class="o">=</span> <span class="n">X_i_j</span>
+                <span class="nb">next</span><span class="o">=</span><span class="n">i</span>
+        <span class="k">if</span> <span class="n">need</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">min_X</span><span class="p">,</span><span class="nb">next</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">min_X</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_X</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)):</span>
+            <span class="n">X_i_j</span> <span class="o">=</span> <span class="n">calculate_X</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">X_i_j</span> <span class="o">&gt;=</span> <span class="n">max_X</span><span class="p">:</span>
+                <span class="n">max_X</span> <span class="o">=</span>  <span class="n">X_i_j</span>
+                <span class="nb">next</span><span class="o">=</span><span class="n">i</span>
+        <span class="k">if</span> <span class="n">need</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">max_X</span><span class="p">,</span> <span class="nb">next</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">max_X</span></div>
+
+
+<div class="viewcode-block" id="found0"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.found0">[docs]</a><span class="k">def</span> <span class="nf">found0</span><span class="p">(</span><span class="n">n_side</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">bound</span><span class="p">):</span>
+    <span class="n">Xf1</span><span class="p">,</span><span class="n">nextf</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">S</span><span class="p">[:</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">h</span><span class="p">[:</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">need</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Xz1</span><span class="p">,</span><span class="n">nextz</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">S</span><span class="p">[</span><span class="o">-</span> <span class="n">n_side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">h</span><span class="p">[</span><span class="o">-</span> <span class="n">n_side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:],</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">need</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Xf1</span> <span class="o">&lt;=</span> <span class="n">Xz1</span><span class="p">:</span>
+        <span class="n">X0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">Xf1</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">Xz1</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">C0</span><span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">nextz</span><span class="o">+</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">h</span><span class="p">[</span><span class="n">nextf</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">nextf</span><span class="p">]</span> <span class="o">-</span> <span class="n">S</span><span class="p">[</span><span class="n">nextz</span><span class="o">+</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">C0</span><span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">C0</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">X0</span> <span class="o">=</span> <span class="p">[</span><span class="n">C0</span><span class="p">,</span> <span class="n">C0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">X0</span></div>
+
+
+<div class="viewcode-block" id="calculate_oneside"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.calculate_oneside">[docs]</a><span class="k">def</span> <span class="nf">calculate_oneside</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="n">bound</span><span class="p">,</span><span class="n">n_side</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">):</span> <span class="c1">#bound=[alpha,beta],n_side=[n_L,n_R]</span>
+    <span class="n">X0</span> <span class="o">=</span> <span class="n">found0</span><span class="p">(</span><span class="n">n_side</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">bound</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+        <span class="n">S</span><span class="o">=</span> <span class="n">S</span><span class="p">[:</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="p">[:</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># C is a list</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">X_n</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">)</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">X_n</span><span class="p">,</span><span class="n">X0</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n_side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">break</span>
+            <span class="n">X_i</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">X_s</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">X_i</span> <span class="o">&lt;=</span> <span class="n">X_s</span><span class="p">:</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">X_s</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">X0</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">X_i</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">X0</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="o">-</span> <span class="n">n_side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="p">[</span><span class="o">-</span> <span class="n">n_side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># C is a list</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_side</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">X_n</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">)</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">X_n</span><span class="p">,</span><span class="n">X0</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">X_i</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">X_s</span> <span class="o">=</span> <span class="n">calculate_X_j</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">side</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">X_i</span> <span class="o">&gt;=</span> <span class="n">X_s</span><span class="p">:</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">X_s</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">X0</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">C</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">X_i</span><span class="p">,</span> <span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">X0</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_C1"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.calculate_C1">[docs]</a><span class="k">def</span> <span class="nf">calculate_C1</span><span class="p">(</span><span class="n">n_R</span><span class="p">,</span> <span class="n">n_L</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">[[],[]]</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calculate_oneside</span><span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">],[</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">],[</span><span class="n">n_L</span><span class="p">,</span><span class="n">n_R</span><span class="p">],</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="s1">&#39;l&#39;</span><span class="p">))</span> <span class="c1">#left</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calculate_oneside</span><span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">],[</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">],[</span><span class="n">n_L</span><span class="p">,</span><span class="n">n_R</span><span class="p">],</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">))</span> <span class="c1">#right</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">C</span></div>
+
+
+<div class="viewcode-block" id="calculate_C"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.calculate_C">[docs]</a><span class="k">def</span> <span class="nf">calculate_C</span><span class="p">(</span><span class="n">n_R</span><span class="p">,</span> <span class="n">n_L</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)):</span>
+        <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">C</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)]</span><span class="o">=</span><span class="n">beta</span>
+    <span class="k">return</span> <span class="n">C</span></div>
+
+
+<div class="viewcode-block" id="onedimC"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.onedimC">[docs]</a><span class="k">def</span> <span class="nf">onedimC</span><span class="p">(</span><span class="n">C</span><span class="p">):</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># W_k = (C[k+n^L],C[k+n^L+1]),n_R+n_L+2 = len(C)</span>
+    <span class="k">return</span> <span class="n">C</span> <span class="c1"># W_S[i] = (C[i],C[i+1])</span></div>
+
+
+<div class="viewcode-block" id="plot_lines_Xj"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.plot_lines_Xj">[docs]</a><span class="k">def</span> <span class="nf">plot_lines_Xj</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">H</span> <span class="p">,</span><span class="n">Co</span><span class="p">,</span><span class="n">side</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">file</span><span class="p">,</span><span class="n">xlable</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">ylable</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[]]</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">Co</span><span class="p">[:</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">Co</span><span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;both&#39;</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>  <span class="c1"># 生成横坐标的取值范围</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">h</span>  <span class="c1"># 直线的方程为 y = s*x + h</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;y = </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># 绘制直线</span>
+
+        <span class="c1"># 标注 calculate_X_j() 函数得到的点</span>
+        <span class="n">Sl</span> <span class="o">=</span><span class="n">S</span><span class="p">[:</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">Hl</span> <span class="o">=</span> <span class="n">H</span><span class="p">[:</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">lx_point</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ly_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lx_point</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lx_point</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ly_point</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">lx_point</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Hl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">ly_point</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">lx_point</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hl</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">lx_point</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lx_point</span><span class="p">,</span> <span class="n">ly_point</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="c1"># 绘制线上的点</span>
+        <span class="c1">#plt.plot(lx_point, np.zeros(len(lx_point)), &#39;rx&#39;)  # 绘制坐标轴点</span>
+
+        <span class="c1">#把边界画出来</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">alpha</span><span class="p">,</span> <span class="n">alpha</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+        <span class="c1">#plt.plot( [-10,10],[Hl[-1],Hl[-1]], &#39;r--&#39;)</span>
+<span class="c1">#you</span>
+        <span class="n">Sr</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="o">-</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">Hr</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">-</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="c1"># 标注 calculate_X_j() 函数得到的点</span>
+        <span class="n">x_point</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">y_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">y_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">continue</span>
+            <span class="n">y_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">Hr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_point</span><span class="p">,</span> <span class="n">y_point</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>  <span class="c1"># 绘制线上的点</span>
+
+        <span class="c1">#把边界画出来</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">beta</span><span class="p">,</span> <span class="n">beta</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlable</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylable</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">elif</span> <span class="n">side</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># 生成横坐标的取值范围</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">h</span>  <span class="c1"># 直线的方程为 y = s*x + h</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;y = </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 绘制直线</span>
+
+        <span class="c1"># 标注 calculate_X_j() 函数得到的点</span>
+        <span class="n">S</span> <span class="o">=</span><span class="n">S</span><span class="p">[:</span><span class="n">n_L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[:</span><span class="n">n_L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">x_point</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">y_point</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_point</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">y_point</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_point</span><span class="p">,</span> <span class="n">y_point</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>  <span class="c1"># 绘制点</span>
+        <span class="c1">#把边界画出来</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">alpha</span><span class="p">,</span> <span class="n">alpha</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="p">[</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">],[</span><span class="n">H</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">H</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+        <span class="c1"># for j in range(len(x_point) - 1):</span>
+        <span class="c1">#     plt.annotate(f&#39;({x_point[j]:.2f}, {y_point[j]:.2f})&#39;, (x_point[j], y_point[j]), xytext=(5, -10),</span>
+        <span class="c1">#                  textcoords=&#39;offset points&#39;)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlable</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylable</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># 生成横坐标的取值范围</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">h</span>  <span class="c1"># 直线的方程为 y = s*x + h</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;y = </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 绘制直线</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="o">-</span> <span class="n">n_R</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">-</span> <span class="n">n_R</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="c1"># 标注 calculate_X_j() 函数得到的点</span>
+        <span class="n">x_point</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">y_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_point</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">y_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">continue</span>
+            <span class="n">y_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_point</span><span class="p">,</span> <span class="n">y_point</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>  <span class="c1"># 绘制点</span>
+        <span class="c1">#把边界画出来</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">beta</span><span class="p">,</span> <span class="n">beta</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+        <span class="c1">#plt.plot(C[-1], range(-100, 100), &#39;ro&#39;)</span>
+        <span class="c1"># for j in range(len(x_point)):</span>
+        <span class="c1">#     plt.annotate(f&#39;{x_point[j]:.2f}&#39;, (x_point[j], y_point[j]), xytext=(5, -10),</span>
+        <span class="c1">#              textcoords=&#39;offset points&#39;)</span>
+        <span class="c1"># for j in range(len(x_point) - 1, 0, -1):</span>
+        <span class="c1">#     print(f&#39;({x_point[j]:.2f}, {y_point[j]:.2f})&#39;)</span>
+        <span class="c1">#     plt.annotate(f&#39;({x_point[j]:.2f}, {y_point[j]:.2f})&#39;, (x_point[j], y_point[j]), xytext=(5, -10),</span>
+        <span class="c1">#                  textcoords=&#39;offset points&#39;)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlable</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylable</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="h_initial"><a class="viewcode-back" href="../../vquant_kernel.html#vquant_kernel.interval.h_initial">[docs]</a><span class="k">def</span> <span class="nf">h_initial</span><span class="p">():</span>
+    <span class="n">divsion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_R</span><span class="o">+</span><span class="n">n_L</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_R</span><span class="o">+</span><span class="n">n_L</span><span class="p">):</span>
+        <span class="n">divsion</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">beta</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n_R</span><span class="o">+</span><span class="n">n_L</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_R</span><span class="o">+</span><span class="n">n_L</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_R</span><span class="o">+</span><span class="n">n_L</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">h_initial</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">A</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">divsion</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#h_initial = [1,1,13,-1,13,14,5,-6,6,3,1,-4,15,2,6]</span>
+    <span class="k">return</span> <span class="n">h_initial</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">n_R</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">n_L</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.1</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mf">7.8</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">h_initial</span><span class="p">()</span>
+    <span class="c1">#h = [3,21,5,-1,13,49,5,-76,6,63,21,-54,5,23,6]</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">calculate_C</span><span class="p">(</span><span class="n">n_R</span><span class="p">,</span> <span class="n">n_L</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+    <span class="c1">#plot_lines_Xj(S, h,C,&#39;l&#39;,alpha,beta)</span>
+    <span class="c1">#plot_lines_Xj(S, h,C,&#39;r&#39;,alpha,beta)</span>
+    <span class="n">plot_lines_Xj</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,[</span><span class="n">n_L</span><span class="p">,</span><span class="n">n_R</span><span class="p">])</span>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Huanning Dong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
