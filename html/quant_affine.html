@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>quant_affine &mdash; Vquants 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="quant_model module" href="quant_model.html" />
+    <link rel="prev" title="main module" href="main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Vquants
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">VQuant量化方案</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">代码说明</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dataloader.html">dataloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">quant_affine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quant_model.html">quant_model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quant_utils.html">quant_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmodules.html">vmodules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html">vquant_kernel package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Vquants</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">代码说明</a></li>
+      <li class="breadcrumb-item active">quant_affine</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quant_affine.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-quant_affine">
+<span id="quant-affine"></span><h1>quant_affine<a class="headerlink" href="#module-quant_affine" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="quant_affine.AsymmetricQuantFunction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quant_affine.</span></span><span class="sig-name descname"><span class="pre">AsymmetricQuantFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#AsymmetricQuantFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.AsymmetricQuantFunction" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code></p>
+<p>Class to quantize the given floating-point values with given range and bit-setting.
+Currently only support inference, but not support back-propagation.
+这里是激活的量化部分</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="quant_affine.AsymmetricQuantFunction.backward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#AsymmetricQuantFunction.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.AsymmetricQuantFunction.backward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines a formula for differentiating the operation with backward mode
+automatic differentiation.</p>
+<p>This function is to be overridden by all subclasses.</p>
+<p>It must accept a context <code class="xref py py-attr docutils literal notranslate"><span class="pre">ctx</span></code> as the first argument, followed by
+as many outputs as the <a class="reference internal" href="#quant_affine.AsymmetricQuantFunction.forward" title="quant_affine.AsymmetricQuantFunction.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> returned (None will be passed in
+for non tensor outputs of the forward function),
+and it should return as many tensors, as there were inputs to
+<a class="reference internal" href="#quant_affine.AsymmetricQuantFunction.forward" title="quant_affine.AsymmetricQuantFunction.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a>. Each argument is the gradient w.r.t the given output,
+and each returned value should be the gradient w.r.t. the
+corresponding input. If an input is not a Tensor or is a Tensor not
+requiring grads, you can just pass None as a gradient for that input.</p>
+<p>The context can be used to retrieve tensors saved during the forward
+pass. It also has an attribute <code class="xref py py-attr docutils literal notranslate"><span class="pre">ctx.needs_input_grad</span></code> as a tuple
+of booleans representing whether each input needs gradient. E.g.,
+<a class="reference internal" href="#quant_affine.AsymmetricQuantFunction.backward" title="quant_affine.AsymmetricQuantFunction.backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">backward()</span></code></a> will have <code class="docutils literal notranslate"><span class="pre">ctx.needs_input_grad[0]</span> <span class="pre">=</span> <span class="pre">True</span></code> if the
+first input to <a class="reference internal" href="#quant_affine.AsymmetricQuantFunction.forward" title="quant_affine.AsymmetricQuantFunction.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> needs gradient computated w.r.t. the
+output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quant_affine.AsymmetricQuantFunction.forward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_quant_weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#AsymmetricQuantFunction.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.AsymmetricQuantFunction.forward" title="Permalink to this definition"></a></dt>
+<dd><p>x: single-precision value to be quantized
+k: bit-setting for x
+x_min: lower bound for quantization range
+x_max=None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quant_affine.adaptive_round">
+<span class="sig-prename descclassname"><span class="pre">quant_affine.</span></span><span class="sig-name descname"><span class="pre">adaptive_round</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#adaptive_round"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.adaptive_round" title="Permalink to this definition"></a></dt>
+<dd><p>量化参数设置</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quant_affine.asymmetric_linear_quantization_params">
+<span class="sig-prename descclassname"><span class="pre">quant_affine.</span></span><span class="sig-name descname"><span class="pre">asymmetric_linear_quantization_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_bits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integral_zero_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#asymmetric_linear_quantization_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.asymmetric_linear_quantization_params" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the scaling factor and zeropoint with the given quantization range.
+saturation_min: lower bound for quantization range
+saturation_max: upper bound for quantization range</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quant_affine.clamp">
+<span class="sig-prename descclassname"><span class="pre">quant_affine.</span></span><span class="sig-name descname"><span class="pre">clamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#clamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.clamp" title="Permalink to this definition"></a></dt>
+<dd><p>Clamp tensor input to (min, max).
+input: input tensor to be clamped</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quant_affine.linear_dequantize">
+<span class="sig-prename descclassname"><span class="pre">quant_affine.</span></span><span class="sig-name descname"><span class="pre">linear_dequantize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#linear_dequantize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.linear_dequantize" title="Permalink to this definition"></a></dt>
+<dd><p>Map integer input tensor to fixed point float point with given scaling factor and zeropoint.
+input: integer input tensor to be mapped
+scale: scaling factor for quantization
+zero_pint: shift for quantization</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quant_affine.linear_quantize">
+<span class="sig-prename descclassname"><span class="pre">quant_affine.</span></span><span class="sig-name descname"><span class="pre">linear_quantize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quant_affine.html#linear_quantize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quant_affine.linear_quantize" title="Permalink to this definition"></a></dt>
+<dd><p>Quantize single-precision input tensor to integers with the given scaling factor and zeropoint.
+input: single-precision input tensor to be quantized
+scale: scaling factor for quantization
+zero_pint: shift for quantization</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main.html" class="btn btn-neutral float-left" title="main module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quant_model.html" class="btn btn-neutral float-right" title="quant_model module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Huanning Dong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
