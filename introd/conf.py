@@ -15,7 +15,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../maincode'))
+sys.path.insert(0, os.path.abspath('../../../maincode'))
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 
