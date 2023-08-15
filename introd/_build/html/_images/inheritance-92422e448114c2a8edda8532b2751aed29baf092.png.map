@@ -1,0 +1,8 @@
+<map id="inheritanceb6c0e835d4" name="inheritanceb6c0e835d4">
+<area shape="rect" id="node1" title="Base class for all neural network modules." alt="" coords="5,80,245,105"/>
+<area shape="rect" id="node2" href="#vmodules.ActivationQuantizer" target="_top" title="vmodules.ActivationQuantizer" alt="" coords="293,5,512,31"/>
+<area shape="rect" id="node3" href="#vmodules.Conv2dQuantizer" target="_top" title="Class to quantize given convolutional layer weights" alt="" coords="301,55,504,80"/>
+<area shape="rect" id="node4" href="#vmodules.LinearQuantizer" target="_top" title="Class to quantize given linear layer weights" alt="" coords="306,104,499,129"/>
+<area shape="rect" id="node5" href="#vmodules.Quantizer" target="_top" title="vmodules.Quantizer" alt="" coords="326,153,479,179"/>
+<area shape="rect" id="node6" href="#vmodules.TensorQuantizer" target="_top" title="vmodules.TensorQuantizer" alt="" coords="560,153,755,179"/>
+</map>

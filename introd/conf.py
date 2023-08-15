@@ -18,6 +18,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../../../maincode'))
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
+# import pydata_sphinxsphinx_theme
 
 # -- Project information -----------------------------------------------------
 
@@ -50,10 +51,10 @@ extensions = [
   'sphinx.ext.autosectionlabel',
   'sphinx.ext.coverage',
   'sphinx.ext.mathjax',
-  'sphinx.ext.viewcode',
   'recommonmark',
   'sphinx_markdown_tables',
   'sphinx.ext.napoleon',
+  'sphinx.ext.inheritance_diagram',
 ]
 autoapi_dirs = ['../../../maincode']
 autoapi_options = ['members', 'undoc-members', 'private-members', 'show-inheritance', 'show-module-summary', 'special-members', 'imported-members']
@@ -76,7 +77,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 source_suffix = ['.rst', '.md', '.MD']
 
 def setup(app):
-    github_doc_root = 'https://localhost:5000'
+    github_doc_root = 'https://github.com/potatochacha'
     app.add_config_value('recommonmark_config', {
         # 'url_resolver': lambda url: github_doc_root + url,
         "enable_auto_toc_tree": True,
@@ -87,12 +88,47 @@ def setup(app):
     }, True)
 
     app.add_transform(AutoStructify)
+
 # html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
+# html_theme = 'sphinx_book_theme'
 html_theme_options = {
-      'logo_only': True,
-      'navigation_depth': 5,
+    "footer_start": ["copyright"],
+    'navigation_depth': 2,
+    'navbar_align': 'content',
+    "icon_links": [
+    {
+        "name": "GitHub",
+        "url": "https://github.com/potatochacha",
+        "icon": "fa-brands fa-square-github",
+        "type": "fontawesome",
+    },
+],
   }
+html_static_path = ['./maincode/Vquant_docs/introd/_static']
+html_logo = "./_static/duck2.jpg"
+html_favicon = "./_static/duck2.jpg"
+html_css_files = ['./_static/custom.css']
+
+html_sidebars = {
+    "<page_pattern>": ["list", "of", "templates"]
+}
+
+# favicons = [
+#     {
+#         "sizes": "16x16",
+#         "href": "https://profile-avatar.csdnimg.cn/334f3ec1c2484587b63913c30e39182b_qq_33039859.jpg",
+#     },
+#     {
+#         "sizes": "32x32",
+#         "href": "https://profile-avatar.csdnimg.cn/334f3ec1c2484587b63913c30e39182b_qq_33039859.jpg",
+#     },
+#     {
+#         "rel": "apple-touch-icon",
+#         "sizes": "180x180",
+#         "href": "like_me.jpeg",  # use a local file in _static
+#     },
+# ]
 
 source_parsers = {
     '.md': CommonMarkParser,

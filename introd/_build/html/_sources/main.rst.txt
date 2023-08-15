@@ -1,12 +1,11 @@
-main module
+main.py
 ===========
 
-.. automodule:: main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   
+- 功能1：设置参数
+   .. autodata:: parser
+      :annotation: = 
 
 
-.. py:function:: test(quantized_model_)
-   执行文件
+- 功能2：执行测试
+   .. py:function:: test(quantized_model_)
+

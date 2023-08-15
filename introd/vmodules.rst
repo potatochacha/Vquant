@@ -1,9 +1,14 @@
-vmodules module
+vmodules.py
 ===============
+- 继承关系
+.. inheritance-diagram:: vmodules
 
-.. automodule:: vmodules
-   :members:
-   :undoc-members:
-   :show-inheritance:
+- 类/函数
+   .. automodule:: vmodules
+      :members:
+      :undoc-members:
+      :show-inheritance:
+
+
 
 

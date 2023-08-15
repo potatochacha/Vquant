@@ -1,4 +1,4 @@
-quant\_model module
+quant\_model.py
 ===================
 
 .. automodule:: quant_model

@@ -1,0 +1,4 @@
+<map id="inheritancea1621d4935" name="inheritancea1621d4935">
+<area shape="rect" id="node1" href="#quant_affine.AsymmetricQuantFunction" target="_top" title="Class to quantize the given floating&#45;point values with given range and bit&#45;setting." alt="" coords="517,5,763,27"/>
+<area shape="rect" id="node2" title="Base class to create custom `autograd.Function`" alt="" coords="270,5,475,27"/>
+</map>
