@@ -55,7 +55,7 @@ extensions = [
   'sphinx_markdown_tables',
   'sphinx.ext.napoleon',
 ]
-autoapi_dirs = ['../../maincode']
+autoapi_dirs = ['../../../maincode']
 autoapi_options = ['members', 'undoc-members', 'private-members', 'show-inheritance', 'show-module-summary', 'special-members', 'imported-members']
 autoapi_type = 'python'
 

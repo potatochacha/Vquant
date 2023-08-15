@@ -93,8 +93,14 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="quant_affine.html#quant_affine.adaptive_round">adaptive_round() (in module quant_affine)</a>
+      <li><a href="vmodules.html#vmodules.ActivationQuantizer">ActivationQuantizer (class in vmodules)</a>
 </li>
+      <li><a href="quant_affine.html#quant_affine.adaptive_round">adaptive_round() (in module quant_affine)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.Quantizer.adaptive_round">(vmodules.Quantizer method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_affine.html#quant_affine.asymmetric_linear_quantization_params">asymmetric_linear_quantization_params() (in module quant_affine)</a>
@@ -132,13 +138,17 @@
 </li>
       <li><a href="vquant_kernel.html#vquant_kernel.interval.calculate_X">calculate_X() (in module vquant_kernel.interval)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vquant_kernel.html#vquant_kernel.interval.calculate_X_j">calculate_X_j() (in module vquant_kernel.interval)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_affine.html#quant_affine.clamp">clamp() (in module quant_affine)</a>
 </li>
       <li><a href="vquant_kernel.html#vquant_kernel.fixnu.compute_gradient">compute_gradient() (in module vquant_kernel.fixnu)</a>
+</li>
+      <li><a href="vmodules.html#vmodules.Conv2dQuantizer">Conv2dQuantizer (class in vmodules)</a>
+</li>
+      <li><a href="vmodules.html#vmodules.Quantizer.convert_tensor">convert_tensor() (vmodules.Quantizer method)</a>
 </li>
       <li><a href="vquant_kernel.html#vquant_kernel.fixnu.cost">cost() (in module vquant_kernel.fixnu)</a>
 </li>
@@ -155,12 +165,20 @@
         <li><a href="dataloader.html#module-dataloader">module</a>
 </li>
       </ul></li>
+      <li><a href="quant_utils.html#quant_utils.disable_input_quantization">disable_input_quantization() (in module quant_utils)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.Quantizer.disable_input_quantization">(vmodules.Quantizer method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="quant_utils.html#quant_utils.disable_input_quantization">disable_input_quantization() (in module quant_utils)</a>
-</li>
       <li><a href="quant_utils.html#quant_utils.disable_quantization">disable_quantization() (in module quant_utils)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.Quantizer.disable_quantization">(vmodules.Quantizer method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -172,7 +190,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_utils.html#quant_utils.enable_quantization">enable_quantization() (in module quant_utils)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.Quantizer.enable_quantization">(vmodules.Quantizer method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -180,7 +202,17 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_affine.html#quant_affine.AsymmetricQuantFunction.forward">forward() (quant_affine.AsymmetricQuantFunction static method)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.ActivationQuantizer.forward">(vmodules.ActivationQuantizer method)</a>
 </li>
+        <li><a href="vmodules.html#vmodules.Conv2dQuantizer.forward">(vmodules.Conv2dQuantizer method)</a>
+</li>
+        <li><a href="vmodules.html#vmodules.LinearQuantizer.forward">(vmodules.LinearQuantizer method)</a>
+</li>
+        <li><a href="vmodules.html#vmodules.TensorQuantizer.forward">(vmodules.TensorQuantizer method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vquant_kernel.html#vquant_kernel.interval.found0">found0() (in module vquant_kernel.interval)</a>
@@ -235,11 +267,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vquant_kernel.html#vquant_kernel.fixnu.lbfgs_optimizer">lbfgs_optimizer() (in module vquant_kernel.fixnu)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_affine.html#quant_affine.linear_dequantize">linear_dequantize() (in module quant_affine)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_affine.html#quant_affine.linear_quantize">linear_quantize() (in module quant_affine)</a>
+</li>
+      <li><a href="vmodules.html#vmodules.LinearQuantizer">LinearQuantizer (class in vmodules)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -258,6 +292,8 @@
         <li><a href="quant_model.html#module-quant_model">quant_model</a>
 </li>
         <li><a href="quant_utils.html#module-quant_utils">quant_utils</a>
+</li>
+        <li><a href="vmodules.html#module-vmodules">vmodules</a>
 </li>
         <li><a href="vquant_kernel.html#module-vquant_kernel">vquant_kernel</a>
 </li>
@@ -329,6 +365,8 @@
       </ul></li>
       <li><a href="quant_model.html#quant_model.quantize_model">quantize_model() (in module quant_model)</a>
 </li>
+      <li><a href="vmodules.html#vmodules.Quantizer">Quantizer (class in vmodules)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -337,10 +375,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_model.html#quant_model.set_first_last_layer">set_first_last_layer() (in module quant_model)</a>
 </li>
-      <li><a href="quant_utils.html#quant_utils.set_quantizer">set_quantizer() (in module quant_utils)</a>
+      <li><a href="vmodules.html#vmodules.Conv2dQuantizer.set_param">set_param() (vmodules.Conv2dQuantizer method)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.LinearQuantizer.set_param">(vmodules.LinearQuantizer method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="quant_utils.html#quant_utils.set_quantizer">set_quantizer() (in module quant_utils)</a>
+</li>
       <li><a href="quant_utils.html#quant_utils.set_util_logging">set_util_logging() (in module quant_utils)</a>
 
       <ul>
@@ -355,8 +399,10 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quant_utils.html#quant_utils.tag_info">tag_info() (in module quant_utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="vmodules.html#vmodules.Quantizer.tensor_forward">tensor_forward() (vmodules.Quantizer method)</a>
+</li>
+      <li><a href="vmodules.html#vmodules.TensorQuantizer">TensorQuantizer (class in vmodules)</a>
+</li>
       <li>
     test()
 
@@ -365,15 +411,33 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="vmodules.html#vmodules.ActivationQuantizer.training">training (vmodules.ActivationQuantizer attribute)</a>
+
+      <ul>
+        <li><a href="vmodules.html#vmodules.Conv2dQuantizer.training">(vmodules.Conv2dQuantizer attribute)</a>
+</li>
+        <li><a href="vmodules.html#vmodules.LinearQuantizer.training">(vmodules.LinearQuantizer attribute)</a>
+</li>
+        <li><a href="vmodules.html#vmodules.Quantizer.training">(vmodules.Quantizer attribute)</a>
+</li>
+        <li><a href="vmodules.html#vmodules.TensorQuantizer.training">(vmodules.TensorQuantizer attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="vquant_kernel.html#vquant_kernel.fixnu.update">update() (in module vquant_kernel.fixnu)</a>
+      <li><a href="vmodules.html#vmodules.Quantizer.updata_packed_element">updata_packed_element() (vmodules.Quantizer method)</a>
+</li>
+      <li><a href="vmodules.html#vmodules.Quantizer.updata_signed">updata_signed() (vmodules.Quantizer method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="vquant_kernel.html#vquant_kernel.fixnu.update">update() (in module vquant_kernel.fixnu)</a>
+</li>
       <li><a href="vquant_kernel.html#vquant_kernel.fixnu.update_h">update_h() (in module vquant_kernel.fixnu)</a>
 </li>
   </ul></td>
@@ -383,12 +447,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
+    vmodules
+
+      <ul>
+        <li><a href="vmodules.html#module-vmodules">module</a>
+</li>
+      </ul></li>
+      <li>
     vquant_kernel
 
       <ul>
         <li><a href="vquant_kernel.html#module-vquant_kernel">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     vquant_kernel.fixnu
 
@@ -396,8 +469,6 @@
         <li><a href="vquant_kernel.html#module-vquant_kernel.fixnu">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     vquant_kernel.interval
 
