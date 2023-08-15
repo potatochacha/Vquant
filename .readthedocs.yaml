@@ -11,5 +11,6 @@ sphinx:
   configuration: introd/conf.py
 
 python:
+   version: 3.9
    install:
    - requirements: introd/requirements.txt
