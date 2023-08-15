@@ -87,8 +87,8 @@ def setup(app):
     }, True)
 
     app.add_transform(AutoStructify)
-
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'alabaster'
+# html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
       'logo_only': True,
       'navigation_depth': 5,
