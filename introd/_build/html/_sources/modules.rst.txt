@@ -1,15 +1,7 @@
-代码说明
-========
-.. inheritance-diagram:: modules
-   
+vquant_kernel
+=============
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 4
 
-   dataloader
-   main
-   quant_affine
-   quant_model
-   quant_utils
-   vmodules
    vquant_kernel

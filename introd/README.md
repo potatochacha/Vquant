@@ -24,14 +24,10 @@ pip install pytorchcv==0.0.51
       - Note that other frameworks didn't quantize the FC input activation after average pooling.
 
 
-2. The quantization procedure MUST not involve any real dataset information. (data-free)
+2. The weight only quantization procedure MUST not involve any real dataset information. (data-free)
     - Weight quantization should finish before the inference without training/validation dataset.
     - Activation can only quantize in inference runtime. However, its quantization range should be set before inference without a training/validation dataset.
 
 3. Test all models
     - All models use the same hyperparameters under the same bit-width.
-    - The results should fit the results (with $\pm 0.2$ error) presented in the manuscript.
-
-3. Ablation study
-    - Reproduce the same results as in the manuscript.
 

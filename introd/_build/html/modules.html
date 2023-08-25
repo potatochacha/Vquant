@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>代码说明 &#8212; Vquants 1.0.0 documentation</title>
+    <title>vquant_kernel &#8212; Vquants 1.0.0 documentation</title>
   
   
   
@@ -40,11 +40,9 @@
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'modules';</script>
-    <link rel="icon" href="_static/duck2.jpg"/>
+    <link rel="icon" href="_static/duck3.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="dataloader.py" href="dataloader.html" />
-    <link rel="prev" title="VQuant量化方案" href="README.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -110,8 +108,8 @@
       
     
     
-    <img src="_static/duck2.jpg" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/duck2.jpg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/duck3.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/duck3.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
   
   
 </a></div>
@@ -139,8 +137,8 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="modules1.html">
                         代码说明
                       </a>
                     </li>
@@ -220,7 +218,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -245,8 +243,8 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="modules1.html">
                         代码说明
                       </a>
                     </li>
@@ -291,23 +289,6 @@ document.write(`
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dataloader.html">dataloader.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quant_affine.html">quant_affine.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quant_model.html">quant_model.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quant_utils.html">quant_utils.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vmodules.html">vmodules.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vquant_kernel.html">vquant_kernel package</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -340,7 +321,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">代码说明</li>
+    <li class="breadcrumb-item active" aria-current="page">vquant_kernel</li>
   </ul>
 </nav>
 </div>
@@ -357,17 +338,34 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="id1">
-<h1>代码说明<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+  <section id="vquant-kernel">
+<h1>vquant_kernel<a class="headerlink" href="#vquant-kernel" title="Permalink to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dataloader.html">dataloader.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quant_affine.html">quant_affine.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quant_model.html">quant_model.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quant_utils.html">quant_utils.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vmodules.html">vmodules.py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vquant_kernel.html">vquant_kernel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vquant_kernel.html">vquant_kernel package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.Eh"><code class="docutils literal notranslate"><span class="pre">Eh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.G"><code class="docutils literal notranslate"><span class="pre">G()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.compute_gradient"><code class="docutils literal notranslate"><span class="pre">compute_gradient()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.cost"><code class="docutils literal notranslate"><span class="pre">cost()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.get_ckpt_path"><code class="docutils literal notranslate"><span class="pre">get_ckpt_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.h_initial"><code class="docutils literal notranslate"><span class="pre">h_initial()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.lbfgs_optimizer"><code class="docutils literal notranslate"><span class="pre">lbfgs_optimizer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.nearC"><code class="docutils literal notranslate"><span class="pre">nearC()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.nu_plot"><code class="docutils literal notranslate"><span class="pre">nu_plot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.optimize"><code class="docutils literal notranslate"><span class="pre">optimize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.set_util_logging"><code class="docutils literal notranslate"><span class="pre">set_util_logging()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.update_h"><code class="docutils literal notranslate"><span class="pre">update_h()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.fixnu.vround"><code class="docutils literal notranslate"><span class="pre">vround()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.calculate_C"><code class="docutils literal notranslate"><span class="pre">calculate_C()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.calculate_C1"><code class="docutils literal notranslate"><span class="pre">calculate_C1()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.calculate_X"><code class="docutils literal notranslate"><span class="pre">calculate_X()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.calculate_X_j"><code class="docutils literal notranslate"><span class="pre">calculate_X_j()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.calculate_oneside"><code class="docutils literal notranslate"><span class="pre">calculate_oneside()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.found0"><code class="docutils literal notranslate"><span class="pre">found0()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.onedimC"><code class="docutils literal notranslate"><span class="pre">onedimC()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vquant_kernel.html#vquant_kernel.interval.plot_lines_Xj"><code class="docutils literal notranslate"><span class="pre">plot_lines_Xj()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -383,24 +381,6 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="README.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">VQuant量化方案</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="dataloader.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">dataloader.py</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div></div>
   
 </div>

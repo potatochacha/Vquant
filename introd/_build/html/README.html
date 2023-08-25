@@ -40,11 +40,11 @@
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
-    <link rel="icon" href="_static/duck2.jpg"/>
+    <link rel="icon" href="_static/duck3.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="代码说明" href="modules.html" />
-    <link rel="prev" title="This is the documentation of Vquant library." href="index.html" />
+    <link rel="next" title="代码说明" href="modules1.html" />
+    <link rel="prev" title="Vquant项目说明文档" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -110,8 +110,8 @@
       
     
     
-    <img src="_static/duck2.jpg" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/duck2.jpg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/duck3.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/duck3.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
   
   
 </a></div>
@@ -140,7 +140,7 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="modules.html">
+                      <a class="nav-link nav-internal" href="modules1.html">
                         代码说明
                       </a>
                     </li>
@@ -246,7 +246,7 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="modules.html">
+                      <a class="nav-link nav-internal" href="modules1.html">
                         代码说明
                       </a>
                     </li>
@@ -381,7 +381,7 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="nv">pytor
 </li>
 </ul>
 </li>
-<li><p>The quantization procedure MUST not involve any real dataset information. (data-free)</p>
+<li><p>The weight only quantization procedure MUST not involve any real dataset information. (data-free)</p>
 <ul class="simple">
 <li><p>Weight quantization should finish before the inference without training/validation dataset.</p></li>
 <li><p>Activation can only quantize in inference runtime. However, its quantization range should be set before inference without a training/validation dataset.</p></li>
@@ -390,12 +390,6 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="nv">pytor
 <li><p>Test all models</p>
 <ul class="simple">
 <li><p>All models use the same hyperparameters under the same bit-width.</p></li>
-<li><p>The results should fit the results (with $\pm 0.2$ error) presented in the manuscript.</p></li>
-</ul>
-</li>
-<li><p>Ablation study</p>
-<ul class="simple">
-<li><p>Reproduce the same results as in the manuscript.</p></li>
 </ul>
 </li>
 </ol>
@@ -419,11 +413,11 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="nv">pytor
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">This is the documentation of Vquant library.</p>
+        <p class="prev-next-title">Vquant项目说明文档</p>
       </div>
     </a>
     <a class="right-next"
-       href="modules.html"
+       href="modules1.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>

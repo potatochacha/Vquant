@@ -40,7 +40,7 @@
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'vquant_kernel';</script>
-    <link rel="icon" href="_static/duck2.jpg"/>
+    <link rel="icon" href="_static/duck3.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="vmodules.py" href="vmodules.html" />
@@ -109,8 +109,8 @@
       
     
     
-    <img src="_static/duck2.jpg" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/duck2.jpg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/duck3.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/duck3.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
   
   
 </a></div>
@@ -139,7 +139,7 @@
                 
 
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="modules.html">
+                      <a class="nav-link nav-internal" href="modules1.html">
                         代码说明
                       </a>
                     </li>
@@ -245,7 +245,7 @@ document.write(`
                 
 
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="modules.html">
+                      <a class="nav-link nav-internal" href="modules1.html">
                         代码说明
                       </a>
                     </li>
@@ -340,7 +340,7 @@ document.write(`
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">代码说明</a></li>
+    <li class="breadcrumb-item"><a href="modules1.html" class="nav-link">代码说明</a></li>
     
     <li class="breadcrumb-item active" aria-current="page">vquant_kernel package</li>
   </ul>
@@ -361,27 +361,33 @@ document.write(`
                   
   <section id="vquant-kernel-package">
 <h1>vquant_kernel package<a class="headerlink" href="#vquant-kernel-package" title="Permalink to this heading">#</a></h1>
-<ul>
-<li><dl>
-<dt>vquant_kernel.fixnu.py</dt><dd><span class="target" id="module-vquant_kernel.fixnu"></span><dl class="py function">
+<p>vquant_kernel.fixnu.py</p>
+<span class="target" id="module-vquant_kernel.fixnu"></span><dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.Eh">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">Eh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#Eh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.Eh" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute the number of E(h).</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.G">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">G</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#G"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.G" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Implement nu = G(h).</p>
+<p>distr: Parameter, deside the distribution of nu.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.compute_gradient">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">compute_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grandtype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#compute_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.compute_gradient" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute the gradient of E(h).</p>
+<p>grandtype: Parameter, “mixgrand” means considering the cost(h).</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.cost">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">costtype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.cost" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute the cost(h).</p>
+<p>costtype: Parameter, deside what kind of cost to use.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.get_ckpt_path">
@@ -391,22 +397,20 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.h_initial">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">h_initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#h_initial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.h_initial" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vquant_kernel.fixnu.keepconvex">
-<span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">keepconvex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#keepconvex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.keepconvex" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initial the h^0 at the outset of optimization using an equation-solving approach.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.lbfgs_optimizer">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">lbfgs_optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#lbfgs_optimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.lbfgs_optimizer" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Another optimizer use L-BFGS Methond(not suggested).</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.nearC">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">nearC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#nearC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.nearC" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Obtain the rounded interval partition.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.nu_plot">
@@ -416,7 +420,13 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.optimize">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nudistr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grandtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">costtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.optimize" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>The  Optimizer based on gradient descent to compute the optimal h, also obtain the optimal C with optimal h.</p>
+<p>x: The object will be quantified.</p>
+<p>uniw, sigmaw: the mean and variance of x.</p>
+<p>grandtype, costtype, nudistr: Parameter to choose some types, used in called function.</p>
+<p>learning_rate, epsilon: Adjusting the learning rate.</p>
+<p>testname: Set the log, not related to optimization.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.set_util_logging">
@@ -424,58 +434,61 @@ document.write(`
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="vquant_kernel.fixnu.update">
-<span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta_nu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.update" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.update_h">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">update_h</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#update_h"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.update_h" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Currently just update the h simply. It should add some code when considering Sigma h = 0</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.fixnu.vround">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.fixnu.</span></span><span class="sig-name descname"><span class="pre">vround</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/fixnu.html#vround"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.fixnu.vround" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Obtain the integer value of x based on interval partition C.</p>
+<p>C: interval partitioning.</p>
+<p>S: The integer value {p_i}_{i=1}^n.</p>
+</dd></dl>
 
-</dd>
-</dl>
-</li>
-<li><dl>
-<dt>vquant_kernel.interval.py</dt><dd><span class="target" id="module-vquant_kernel.interval"></span><dl class="py function">
+<p>vquant_kernel.interval.py</p>
+<span class="target" id="module-vquant_kernel.interval"></span><dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.calculate_C">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">calculate_C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#calculate_C"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.calculate_C" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>It has the same purpose(function) with calculate_C1().</p>
+<p>It is simpler and doesn’t require other functions to calculate C.</p>
+<p>Only applicable when the learning rate is relatively small.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.calculate_C1">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">calculate_C1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#calculate_C1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.calculate_C1" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>The finly step to compute C, depends on aforementioned fuction.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.calculate_X">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">calculate_X</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#calculate_X"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.calculate_X" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute X_ij(h) for all i and j.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.calculate_X_j">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">calculate_X_j</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">need</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#calculate_X_j"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.calculate_X_j" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute X_j(h) for and j using calculate_X().</p>
+<p>need: Determine whether to retain the index of the next breakpoint.</p>
+<p>side: There are two cases for calculating the calculate_X_j(): left(p_i&lt;0) and right(p_i&gt;0).</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.calculate_oneside">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">calculate_oneside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#calculate_oneside"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.calculate_oneside" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate the result of C on selected side.</p>
+<p>bound: [alpha,beta]</p>
+<p>n_side: [n_L,n_R]</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.found0">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">found0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#found0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.found0" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vquant_kernel.interval.h_initial">
-<span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">h_initial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#h_initial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.h_initial" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Used in calculate_oneside() to find the inner bound of selected side.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.onedimC">
@@ -485,12 +498,9 @@ document.write(`
 <dl class="py function">
 <dt class="sig sig-object py" id="vquant_kernel.interval.plot_lines_Xj">
 <span class="sig-prename descclassname"><span class="pre">vquant_kernel.interval.</span></span><span class="sig-name descname"><span class="pre">plot_lines_Xj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vquant_kernel/interval.html#plot_lines_Xj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vquant_kernel.interval.plot_lines_Xj" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot the convex function u(x).</p>
+</dd></dl>
 
-</dd>
-</dl>
-</li>
-</ul>
 </section>
 
 
@@ -537,13 +547,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.cost"><code class="docutils literal notranslate"><span class="pre">cost()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.get_ckpt_path"><code class="docutils literal notranslate"><span class="pre">get_ckpt_path()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.h_initial"><code class="docutils literal notranslate"><span class="pre">h_initial()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.keepconvex"><code class="docutils literal notranslate"><span class="pre">keepconvex()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.lbfgs_optimizer"><code class="docutils literal notranslate"><span class="pre">lbfgs_optimizer()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.nearC"><code class="docutils literal notranslate"><span class="pre">nearC()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.nu_plot"><code class="docutils literal notranslate"><span class="pre">nu_plot()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.optimize"><code class="docutils literal notranslate"><span class="pre">optimize()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.set_util_logging"><code class="docutils literal notranslate"><span class="pre">set_util_logging()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.update"><code class="docutils literal notranslate"><span class="pre">update()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.update_h"><code class="docutils literal notranslate"><span class="pre">update_h()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.fixnu.vround"><code class="docutils literal notranslate"><span class="pre">vround()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.calculate_C"><code class="docutils literal notranslate"><span class="pre">calculate_C()</span></code></a></li>
@@ -552,7 +560,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.calculate_X_j"><code class="docutils literal notranslate"><span class="pre">calculate_X_j()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.calculate_oneside"><code class="docutils literal notranslate"><span class="pre">calculate_oneside()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.found0"><code class="docutils literal notranslate"><span class="pre">found0()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.h_initial"><code class="docutils literal notranslate"><span class="pre">h_initial()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.onedimC"><code class="docutils literal notranslate"><span class="pre">onedimC()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vquant_kernel.interval.plot_lines_Xj"><code class="docutils literal notranslate"><span class="pre">plot_lines_Xj()</span></code></a></li>
 </ul>

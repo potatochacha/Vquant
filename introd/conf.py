@@ -16,6 +16,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../../maincode'))
+sys.path.insert(0, os.path.abspath('../../../maincode/vquant\_kernel'))
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 # import pydata_sphinxsphinx_theme
@@ -106,8 +107,8 @@ html_theme_options = {
 ],
   }
 html_static_path = ['./maincode/Vquant_docs/introd/_static']
-html_logo = "./_static/duck2.jpg"
-html_favicon = "./_static/duck2.jpg"
+html_logo = "./_static/duck3.png"
+html_favicon = "./_static/duck3.png"
 html_css_files = ['./_static/custom.css']
 
 html_sidebars = {
